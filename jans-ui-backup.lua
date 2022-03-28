@@ -1,3 +1,4 @@
+-- just pasted from the source found on bloodball's github; original link: https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/cat
 -- insert troll face, memcorruptv2
 local library = { 
 	flags = { }, 
