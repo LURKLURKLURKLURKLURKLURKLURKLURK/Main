@@ -215,12 +215,11 @@ function library:CreateWatermark(name, position)
     return watermark
 end
 
-function library:CreateWindow(name, size, hidebutton)
+function library:CreateWindow(name, size)
     local window = { }
 
     window.name = name or ""
     window.size = UDim2.fromOffset(size.X, size.Y) or UDim2.fromOffset(492, 598)
-    window.hidebutton = hidebutton or Enum.KeyCode.RightShift
     window.theme = library.theme
 
     local updateevent = Instance.new("BindableEvent")
@@ -280,12 +279,6 @@ function library:CreateWindow(name, size, hidebutton)
     window.Frame.AnchorPoint = Vector2.new(0.5, 0.5)
     updateevent.Event:Connect(function(theme)
         window.Frame.BackgroundColor3 = theme.backgroundcolor
-    end)
-
-    uis.InputBegan:Connect(function(key)
-        if key.KeyCode == window.hidebutton then
-            window.Frame.Visible = not window.Frame.Visible
-        end
     end)
 
     local function checkIfGuiInFront(Pos)
