@@ -226,6 +226,9 @@ function boxBase:Update()
         
         self.Components.Name.Font = ESP.Font 
         self.Components.Name.Size = ESP.Size
+        self.Components.Distance.Font = ESP.Font 
+        self.Components.Distance.Size = ESP.Size 
+
         if Vis5 then
             self.Components.Name.Visible = true
             self.Components.Name.Position = Vector2.new(TagPos.X, TagPos.Y)
@@ -234,7 +237,7 @@ function boxBase:Update()
             
             self.Components.Distance.Visible = true
             self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 14)
-            self.Components.Distance.Text = math.floor((cam.CFrame.p - cf.p).magnitude) .."m away"
+            self.Components.Distance.Text = "["..math.floor((cam.CFrame.p - cf.p).magnitude) .."s]"
             self.Components.Distance.Color = color
         else
             self.Components.Name.Visible = false
