@@ -20,29 +20,32 @@ local mouse = player:GetMouse()
 local camera = game.Workspace.CurrentCamera
 
 library.theme = {
-    fontsize = 15,
-    titlesize = 18,
+    fontsize = 17,
+    titlesize = 17,
     font = Enum.Font.Code,
-    background = "rbxassetid://5553946656",
-    tilesize = 90,
+    background = "rbxassetid://6073628839",
+    tilesize = 22,
     cursor = true,
     cursorimg = "https://t0.rbxcdn.com/42f66da98c40252ee151326a82aab51f",
-    backgroundcolor = Color3.fromRGB(20, 20, 20),
+    backgroundcolor = Color3.fromRGB(20,20,20),
     tabstextcolor = Color3.fromRGB(240, 240, 240),
     bordercolor = Color3.fromRGB(60, 60, 60),
-    accentcolor = Color3.fromRGB(28, 56, 139),
-    accentcolor2 = Color3.fromRGB(16, 31, 78),
+    accentcolor = Color3.fromRGB(155,0,0),
+    accentcolor2 = Color3.fromRGB(255, 0, 0),
     outlinecolor = Color3.fromRGB(60, 60, 60),
     outlinecolor2 = Color3.fromRGB(0, 0, 0),
-    sectorcolor = Color3.fromRGB(30, 30, 30),
+    sectorcolor = Color3.fromRGB(25, 25, 25),
     toptextcolor = Color3.fromRGB(255, 255, 255),
     topheight = 48,
-    topcolor = Color3.fromRGB(30, 30, 30),
-    topcolor2 = Color3.fromRGB(30, 30, 30),
+    topcolor = Color3.fromRGB(35, 35, 35),
+    topcolor2 = Color3.fromRGB(25,25,25),
     buttoncolor = Color3.fromRGB(49, 49, 49),
     buttoncolor2 = Color3.fromRGB(39, 39, 39),
     itemscolor = Color3.fromRGB(200, 200, 200),
-    itemscolor2 = Color3.fromRGB(210, 210, 210)
+    itemscolor2 = Color3.fromRGB(210, 210, 210),
+    tabselected = Color3.fromRGB(230,230,230),
+    toggledtruecolor = Color3.fromRGB(230,230,230),
+    toggledfalsecolor = Color3.fromRGB(130,130,130),
 }
 
 if library.theme.cursor and Drawing then
@@ -221,7 +224,7 @@ function library:CreateWindow(name, size)
     window.name = name or ""
     window.size = UDim2.fromOffset(size.X, size.Y) or UDim2.fromOffset(492, 598)
     window.theme = library.theme
-
+    
     local updateevent = Instance.new("BindableEvent")
     function window:UpdateTheme(theme)
         updateevent:Fire(theme or library.theme)
@@ -269,6 +272,7 @@ function library:CreateWindow(name, size)
     end
 
     window.Frame = Instance.new("TextButton", window.Main)
+    window.Frame.Modal = true
     window.Frame.Name = "main"
     window.Frame.Position = UDim2.fromScale(0.5, 0.5)
     window.Frame.BorderSizePixel = 0
@@ -414,6 +418,7 @@ function library:CreateWindow(name, size)
     window.Line.Size = UDim2.fromOffset(60, 1)
     window.Line.BorderSizePixel = 0
     window.Line.BackgroundColor3 = window.theme.accentcolor
+    window.Line.Visible = false
     updateevent.Event:Connect(function(theme)
         window.Line.BackgroundColor3 = theme.accentcolor
     end)
@@ -433,7 +438,7 @@ function library:CreateWindow(name, size)
         local size = textservice:GetTextSize(tab.name, window.theme.fontsize, window.theme.font, Vector2.new(200,300))
 
         tab.TabButton = Instance.new("TextButton", window.TabList)
-        tab.TabButton.TextColor3 = window.theme.tabstextcolor
+        tab.TabButton.TextColor3 = Color3.fromRGB(130, 130, 130)
         tab.TabButton.Text = tab.name
         tab.TabButton.AutoButtonColor = false
         tab.TabButton.Font = window.theme.font
@@ -500,14 +505,14 @@ function library:CreateWindow(name, size)
             block = true
             for i,v in pairs(window.Tabs) do
                 if v ~= tab then
-                    v.TabButton.TextColor3 = Color3.fromRGB(230, 230, 230)
+                    local toggleon = tweenservice:Create(v.TabButton, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { TextColor3 = window.theme.toggledfalsecolor}):Play()
                     v.TabButton.Name = "Tab"
                     v.Left.Visible = false
                     v.Right.Visible = false
                 end
             end
 
-            tab.TabButton.TextColor3 = window.theme.accentcolor
+            local toggleoff = tweenservice:Create(tab.TabButton, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { TextColor3 = window.theme.toggledtruecolor}):Play()
             tab.TabButton.Name = "SelectedTab"
             tab.Right.Visible = true
             tab.Left.Visible = true
@@ -601,7 +606,7 @@ function library:CreateWindow(name, size)
             sector.Label = Instance.new("TextLabel", sector.Main)
             sector.Label.AnchorPoint = Vector2.new(0,0.5)
             sector.Label.Position = UDim2.fromOffset(12, -1)
-            sector.Label.Size = UDim2.fromOffset(math.clamp(textservice:GetTextSize(sector.name, 15, window.theme.font, Vector2.new(200,300)).X + 13, 0, sector.Main.Size.X.Offset), size.Y)
+            sector.Label.Size = UDim2.fromOffset(math.clamp(textservice:GetTextSize(sector.name, 15, window.theme.font, Vector2.new(200,300)).X + 15, 0, sector.Main.Size.X.Offset), size.Y)
             sector.Label.BackgroundTransparency = 1
             sector.Label.BorderSizePixel = 0
             sector.Label.ZIndex = 6
@@ -621,7 +626,7 @@ function library:CreateWindow(name, size)
             sector.LabelBackFrame.ZIndex = 5
             sector.LabelBackFrame.Size = UDim2.fromOffset(sector.Label.Size.X.Offset, 10)
             sector.LabelBackFrame.BorderSizePixel = 0
-            sector.LabelBackFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            sector.LabelBackFrame.BackgroundColor3 = window.theme.sectorcolor
             sector.LabelBackFrame.Position = UDim2.fromOffset(sector.Label.Position.X.Offset, sector.BlackOutline2.Position.Y.Offset)
 
             sector.Items = Instance.new("Frame", sector.Main) 
@@ -848,7 +853,7 @@ function library:CreateWindow(name, size)
                 toggle.Label.TextXAlignment = Enum.TextXAlignment.Left
                 updateevent.Event:Connect(function(theme)
                     toggle.Label.Font = theme.font
-                    toggle.Label.TextColor3 = toggle.value and window.theme.itemscolor2 or theme.itemscolor
+                    --toggle.Label.TextColor3 = toggle.value and window.theme.itemscolor2 or theme.itemscolor
                 end)
 
                 toggle.CheckedFrame = Instance.new("Frame", toggle.Main)
@@ -885,9 +890,11 @@ function library:CreateWindow(name, size)
 
                 function toggle:Set(value) 
                     if value then
-                        toggle.Label.TextColor3 = window.theme.itemscolor2
+                        local toggleon = tweenservice:Create(toggle.Label, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { TextColor3 = window.theme.toggledtruecolor}):Play()
+                        --toggle.Label.TextColor3 = window.theme.toggledtruecolor
                     else
-                        toggle.Label.TextColor3 = window.theme.itemscolor
+                        local toggleoff = tweenservice:Create(toggle.Label, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), { TextColor3 = window.theme.toggledfalsecolor}):Play()
+                        --toggle.Label.TextColor3 = window.theme.toggledfalsecolor
                     end
 
                     toggle.value = value
