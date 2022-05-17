@@ -25,7 +25,7 @@ library.theme = {
     font = Enum.Font.Code,
     background = "rbxassetid://6073628839",
     tilesize = 22,
-    cursor = true,
+    cursor = false,
     cursorimg = "https://t0.rbxcdn.com/42f66da98c40252ee151326a82aab51f",
     backgroundcolor = Color3.fromRGB(20,20,20),
     tabstextcolor = Color3.fromRGB(240, 240, 240),
@@ -272,7 +272,6 @@ function library:CreateWindow(name, size)
     end
 
     window.Frame = Instance.new("TextButton", window.Main)
-    window.Frame.Modal = true
     window.Frame.Name = "main"
     window.Frame.Position = UDim2.fromScale(0.5, 0.5)
     window.Frame.BorderSizePixel = 0
