@@ -1,14 +1,9 @@
---// I DID NOT MAKE THIS!!!
---// I only modified a few things; Original ESP: https://kiriot22.com/releases/ESP.lua 
 --Settings--
 local ESP = {
-    MaxDistance = 1000,
     Enabled = false,
     Boxes = true,
     BoxShift = CFrame.new(0,-1.5,0),
 	BoxSize = Vector3.new(4,6,0),
-    Font = 2,
-    Size = 13,
     Color = Color3.fromRGB(255, 170, 0),
     FaceCamera = false,
     Names = true,
@@ -189,7 +184,6 @@ function boxBase:Update()
 
     --calculations--
     local cf = self.PrimaryPart.CFrame
-    local Distance = math.floor((cam.CFrame.p - cf.p).magnitude) 
     if ESP.FaceCamera then
         cf = CFrame.new(cf.p, cam.CFrame.p)
     end
@@ -209,8 +203,8 @@ function boxBase:Update()
         local BottomLeft, Vis3 = WorldToViewportPoint(cam, locs.BottomLeft.p)
         local BottomRight, Vis4 = WorldToViewportPoint(cam, locs.BottomRight.p)
 
-        if self.Components.Quad  then
-            if (Vis1 or Vis2 or Vis3 or Vis4) and Distance <= ESP.MaxDistance then
+        if self.Components.Quad then
+            if Vis1 or Vis2 or Vis3 or Vis4 then
                 self.Components.Quad.Visible = true
                 self.Components.Quad.PointA = Vector2.new(TopRight.X, TopRight.Y)
                 self.Components.Quad.PointB = Vector2.new(TopLeft.X, TopLeft.Y)
@@ -228,12 +222,7 @@ function boxBase:Update()
     if ESP.Names then
         local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
         
-        self.Components.Name.Font = ESP.Font 
-        self.Components.Name.Size = ESP.Size
-        self.Components.Distance.Font = ESP.Font 
-        self.Components.Distance.Size = ESP.Size 
-
-        if Vis5 and Distance <= ESP.MaxDistance  then
+        if Vis5 then
             self.Components.Name.Visible = true
             self.Components.Name.Position = Vector2.new(TagPos.X, TagPos.Y)
             self.Components.Name.Text = self.Name
@@ -241,7 +230,7 @@ function boxBase:Update()
             
             self.Components.Distance.Visible = true
             self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 14)
-            self.Components.Distance.Text = "["..Distance .."s]"
+            self.Components.Distance.Text = math.floor((cam.CFrame.p - cf.p).magnitude) .."m"
             self.Components.Distance.Color = color
         else
             self.Components.Name.Visible = false
@@ -255,7 +244,7 @@ function boxBase:Update()
     if ESP.Tracers then
         local TorsoPos, Vis6 = WorldToViewportPoint(cam, locs.Torso.p)
 
-        if Vis6  and Distance <= ESP.MaxDistance then
+        if Vis6 then
             self.Components.Tracer.Visible = true
             self.Components.Tracer.From = Vector2.new(TorsoPos.X, TorsoPos.Y)
             self.Components.Tracer.To = Vector2.new(cam.ViewportSize.X/2,cam.ViewportSize.Y/ESP.AttachShift)
@@ -304,14 +293,16 @@ function ESP:Add(obj, options)
 		Color = box.Color,
 		Center = true,
 		Outline = true,
-        Size = 19,
+        Size = 13,
+        Font =2,
         Visible = self.Enabled and self.Names
 	})
 	box.Components["Distance"] = Draw("Text", {
 		Color = box.Color,
 		Center = true,
 		Outline = true,
-        Size = 19,
+        Size = 13,
+        Font =2,
         Visible = self.Enabled and self.Names
 	})
 	
