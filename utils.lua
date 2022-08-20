@@ -161,7 +161,7 @@ local utils = {}; do
                 end 
             end
             --utils.cache[item].Text.Visible = onscreen and ((library ~= nil and library.flags[flag]) or true)
-            if onscreen then 
+            if onscreen and distance <= library.flags['misc_render'] then 
                 utils.cache[item].Text.Visible = library.flags[flag]
                 else 
                     utils.cache[item].Text.Visible = false 
