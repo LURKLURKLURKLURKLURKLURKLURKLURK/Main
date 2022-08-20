@@ -160,7 +160,12 @@ local utils = {}; do
                     utils.cache[item].Text.Position = v2(screenpos.X,screenpos.Y)
                 end 
             end
-            utils.cache[item].Text.Visible = onscreen and ((library ~= nil and library.flags[flag]) or true)
+            --utils.cache[item].Text.Visible = onscreen and ((library ~= nil and library.flags[flag]) or true)
+            if onscreen then 
+                utils.cache[item].Text.Visible = library.flags[flag]
+                else 
+                    utils.cache[item].Text.Visible = false 
+            end
         end)
     end
     
