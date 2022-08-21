@@ -145,7 +145,7 @@ local utils = {}; do
         }
         local screenpos, onscreen
         
-        return runservice.Heartbeat:Connect(function()
+        utils.cache[item].render = runservice.Heartbeat:Connect(function()
             screenpos, onscreen = wtvp(camera,isbasepart and item.Position or item)
             local distance = utils.getDistFromCamera(isbasepart and item.Position or item)
             if onscreen then 
@@ -167,8 +167,17 @@ local utils = {}; do
                     utils.cache[item].Text.Visible = false 
             end
         end)
+        return utils.cache[item].render
     end
     
+    utils.remove_esp = function(item)
+        if esp.cache[item] then 
+            local esp_table = esp.cache[item]
+            esp_table.render:Disconnect()
+            esp_table.Text:Remove()
+            esp.cache[item] = nil 
+        end
+    end
     utils.updateBeams = function()
 		local time = tick()
 		for i = #utils.beams, 1, -1 do
