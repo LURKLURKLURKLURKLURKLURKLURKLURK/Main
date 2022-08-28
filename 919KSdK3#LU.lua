@@ -4,7 +4,7 @@ local supported_games = {
     4588604953, 455366377, 863266079, 6407649031,
 }
 if not table.find(supported_games,game.PlaceId) and not string.find(gamename,'Criminality') then 
-    loadstring(game:HttpGet('https://scripts.luawl.com/11864/Universal.lua'))()
+    loadstring(game:HttpGet('https://scripts.luawl.com/11954/pie.solutions.lua'))()
     else 
         if game.PlaceId == 4588604953 then 
             loadstring(game:HttpGet('https://scripts.luawl.com/11829/Criminality.lua'))()
