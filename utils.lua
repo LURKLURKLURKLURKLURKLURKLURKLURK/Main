@@ -237,11 +237,6 @@ local utils = {}; do
 		utils.updateBeams()
 		return beam
     end
-end
+end 
 
---[[
-examples:
-utils.esp_item('',lp.Character.Head,true,'Example Item ESP')
-utils.create_tracer(lp.Character.Head.Position, lp.Character.Head.Position + v3(20,0,20),fromrgb(255,255,255))]]
-getgenv().utils = utils 
 return utils 
