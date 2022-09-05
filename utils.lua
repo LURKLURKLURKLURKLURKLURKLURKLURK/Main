@@ -7,7 +7,7 @@ local findfirstchild, findfirstchildofclass, findfirstancestor, findfirstancesto
 local rad, round, floor,tan,atan2 = math.rad, math.Round, math.floor,math.tan,math.atan2
 local drawing_classes = {'Triangle','Text','Image','Square','Quad'}
 local partsFolder = Instance.new('Folder',camera)
-
+partsFolder.Name = 'BeamsFolder'
 local utils = {}; do
     utils.beams = {}
     utils.cache = {}
@@ -193,7 +193,7 @@ local utils = {}; do
     utils.create_tracer = function(pos1,pos2,color)
         local origin_part = utils.Create('Part',{
             Transparency =1, 
-            Size = v3(1,1,1),
+            Size = v3(0.1,0.1,0.1,),
             CanCollide = false, 
             Parent = partsFolder,
             Anchored = true,
@@ -201,7 +201,7 @@ local utils = {}; do
         })
         local ending_part = utils.Create('Part',{
             Transparency =1, 
-            Size = v3(1,1,1),
+            Size = v3(0.1,0.1,0.1),
             CanCollide = false, 
             Parent = partsFolder,
             Anchored = true,
