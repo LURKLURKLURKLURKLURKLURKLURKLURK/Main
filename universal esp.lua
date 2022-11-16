@@ -1,4 +1,3 @@
--- new accent? 127, 50, 168
 local players,runservice,replicatedstorage = game.GetService(game,'Players'),game.GetService(game,'RunService'),game.GetService(game,'ReplicatedStorage')
 local camera,lp = workspace.CurrentCamera,players.LocalPlayer
 local findfirstchild,findfirstchildofclass,findfirstancestor = game.FindFirstChild,game.FindFirstChildOfClass,game.FindFirstAncestor;
@@ -16,19 +15,18 @@ local esp = {
     outlines         = {enabled = false, color = c3rgb(0,0,0)},
     fontsize         = 13,
     font             = 2,
-    distance_mode    = 'studs',
     text             = {enabled = false, color = c3rgb(255,255,255)},
     misc_layout      = {
-        ['arrows']    = {transparency = 1, enabled = false, size = 10, color = c3rgb(255,255,255),radius = 500},
+        ['arrows']    = {transparency = 1, enabled = false, size = 15, color = c3rgb(255,255,255),radius = 500},
         ['box']       = {inner = false, inner_trans = 0.5, inner_color = c3rgb(0,0,0), enabled = false, color = c3rgb(255,255,255)},
-        ['health']    = {enabled = false, lower = c3rgb(255,0,0),higher = c3rgb(255,255,255),position = 'left'},
+        ['health']    = {enabled = false, lower = c3rgb(255,0,0),higher = c3rgb(0,255,0)},
         ['highlight'] = {enabled = false, outline = c3rgb(255,255,255),fill = c3rgb(255,255,255),outlinetrans = 0,filltrans = 0},
     },
     text_layout      = {
-        ['health']   = {enabled = false, position = 'left'},
-        ['name']     = {enabled = false,position = 'top',order = 1},
-        ['distance'] = {enabled = false, position = 'bottom',order = 1},
-        ['tool']     = {enabled = false, position = 'bottom',order = 2},
+        ['health']   = {enabled = false},
+        ['name']     = {enabled = false},
+        ['distance'] = {enabled = false},
+        ['tool']     = {enabled = false},
     },
     cache = {},
 };
@@ -180,10 +178,10 @@ function esp.add_plr(plr)
         Thickness = 1,
     });
     plr_tab.healthbar_outline = esp.draw('Line',{
-        Thickness = 4.5,
+        Thickness = 3,
     });
     plr_tab.healthbar = esp.draw('Line',{
-        Thickness = 2.5,
+        Thickness = 1,
     });
     plr_tab.name = esp.draw('Text',{
         Center = true,
@@ -191,6 +189,7 @@ function esp.add_plr(plr)
     plr_tab.name_bold = esp.draw('Text',{
         Center = true,
         Outline = false,
+        Transparency = 1,
     });
     plr_tab.distance = esp.draw('Text',{
         Center = true,
@@ -232,16 +231,15 @@ function esp.update_esp(plr,array)
         
         local character = esp.get_char(plr)
         local rootpart = esp.getprimarypart(character)
-        local pos, size = gbb(character)
-		local height = (camera.CFrame - camera.CFrame.p) * v3(0, (mclamp(size.Y, 1, 10) + 0.5) / 2, 0)
-		height = mabs(wtsp(camera, pos.Position + height).Y - wtsp(camera, pos.Position - height).Y)
-		size = (v2(mfloor(height / 1.5), mfloor(height)))
-		
-		--[[ local Size = (Camera:WorldToViewportPoint(RootPart.Position - Vector3.new(0, 3, 0)).Y - Camera:WorldToViewportPoint(RootPart.Position + Vector3.new(0, 2.6, 0)).Y) / 2
-        local BoxSize = Vector2.new(math.floor(Size * 1.5), math.floor(Size* 2.2))
-        local BoxPos = Vector2.new(math.floor(Vector.X - Size * 1.5 / 2), math.floor(Vector.Y - Size * 2.14/ 2.2))]]
-		local screenpos, onscreen = wtvp(camera, pos.Position)
-		local position = (v2(mfloor(screenpos.X), mfloor(screenpos.Y)) - (size / 2))
+        local screenpos, onscreen = wtvp(camera, rootpart.Position)
+        local scale_factor = 1 / (screenpos.Z * math.tan(math.rad(workspace.CurrentCamera.FieldOfView * 0.5)) * 2) * 100
+        local width, height = math.floor(45 * scale_factor), math.floor(65 * scale_factor)
+        local size = Vector2.new(width,height)
+        if size.X < 3 or size.Y < 6 then 
+		    size = v2(5,10) -- makes it look proper at distance 
+		end
+        local position = Vector2.new(screenpos.X - size.X / 2,screenpos.Y - size.Y / 2)
+
 		position = v2(mfloor(position.X),mfloor(position.Y))
 		local bottom_bounds = 0
         local top_bounds = 0 
@@ -270,7 +268,7 @@ function esp.update_esp(plr,array)
                     
                     array.arrow.Visible = true 
                     array.arrow_outline.Visible = esp.outlines.enabled
-                    array.arrow_outline.Color = esp.outlines.color
+                    array.arrow_outline.Color = esp.misc_layout['arrows'].color 
                     else 
                         array.arrow_outline.Visible = false 
                         array.arrow.Visible = false
@@ -340,7 +338,7 @@ function esp.update_esp(plr,array)
 		        if esp.text.enabled then 
 		            if esp.text_layout['name'].enabled then
 		                array.name.Transparency = 1 
-		                array.name_bold.Transparency = 1
+		                array.name_bold.Transparency = 0.5
 		                array.name.Visible = true 
 		                array.name.Text = tostring(plr)
 		                array.name.Size = esp.fontsize 
@@ -375,9 +373,9 @@ function esp.update_esp(plr,array)
 		            
 		            if esp.text_layout['distance'].enabled then
 		                array.distance.Transparency = 1 
-		                array.distance_bold.Transparency = 1
+		                array.distance_bold.Transparency = 0.5
 		                array.distance.Visible = true 
-		                array.distance.Text = '['..tostring(mfloor(distance)) .. ' studs]'
+		                array.distance.Text = tostring(mfloor(distance))..'s'
 		                array.distance.Size = esp.fontsize 
 		                array.distance.Font = esp.font 
 		                if esp.highlight_target.enabled and esp.highlight_target.target == tostring(character) then
@@ -409,17 +407,18 @@ function esp.update_esp(plr,array)
 		            end
 		            
 		            if esp.text_layout['health'].enabled then
-		                local HEALTH_FROM = v2((position.X - 5), position.Y + size.Y)
+		                local From = Vector2.new((position.X - 5), position.Y + size.Y)
+		                local To = Vector2.new(From.X, From.Y - 1 * size.Y)
 		                array.health.Transparency = 1 
-		                array.health_bold.Transparency = 1
+		                array.health_bold.Transparency = 0.5
 		                array.health.Visible = true 
 		                array.health.Text = tostring(mfloor(character.Humanoid.Health))
 		                array.health.Size = esp.fontsize 
 		                array.health.Font = esp.font 
-		                array.health.Color = esp.misc_layout['health'].lower:lerp(esp.misc_layout['health'].higher,character.Humanoid.Health / character.Humanoid.MaxHealth);
+		                array.health.Color = esp.text.color
 		                array.health.Outline = esp.outlines.enabled 
 		                array.health.OutlineColor = esp.outlines.color 
-		                array.health.Position = v2(position.X - 30, (bottom_offset.Y + top_offset.Y )/2) --v2(position.X - 30, (bottom_offset.Y + (top_offset.Y + 20))/2)
+		                array.health.Position = Vector2.new(position.X - 30, To.Y)
 		                if esp.boldtext then 
 		                    array.health_bold.Visible = true 
 		                    array.health_bold.Size = esp.fontsize 
@@ -437,10 +436,11 @@ function esp.update_esp(plr,array)
 		            
 		            
 		            if esp.text_layout['tool'].enabled then
+		                local tool_found = findfirstchildofclass(character,'Tool')
 		                array.tool.Transparency = 1 
-		                array.tool_bold.Transparency = 1
+		                array.tool_bold.Transparency = 0.5
 		                array.tool.Visible = true 
-		                array.tool.Text = (findfirstchildofclass(character,'Tool') and tostring(findfirstchildofclass(character,'Tool'))) or 'none'
+		                array.tool.Text = tool_found ~= nil and tool_found.Name or 'none'
 		                array.tool.Size = esp.fontsize 
 		                array.tool.Font = esp.font
 		                if esp.highlight_target.enabled and esp.highlight_target.target == tostring(character) then
@@ -496,6 +496,8 @@ function esp.update_esp(plr,array)
 		    array.highlight.Enabled = false
 		end
         else
+            array.arrow_outline.Visible = false 
+            array.arrow.Visible = false
             esp.setall(array,'Visible',false)
             array.highlight.Enabled = false
     end
