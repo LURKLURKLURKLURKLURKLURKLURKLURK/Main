@@ -53,18 +53,16 @@ function esp.get_char(plr)
 end;
 
 function esp.getprimarypart(model)
-    local found_part
-    if model and esp.getplr_fromchar(model) then 
-        if model.PrimaryPart then 
+    local found_part = nil
+    if model and esp.getplr_fromchar(model) then
+        if findfirstchild(model,'HumanoidRootPart') then 
+            found_part = findfirstchild(model,'HumanoidRootPart')
+        end
+        if found_part == nil and findfirstchild(model,'LowerTorso') then 
+            found_part = findfirstchild(model,'LowerTorso') 
+        end
+        if found_part == nil and model.PrimaryPart then 
             found_part = model.PrimaryPart 
-        end
-        
-        if not model.PrimaryPart and (findfirstchild(model,'HumanoidRootPart') or findfirstchild(model,'Torso') or findfirstchild(model,'UpperTorso')) then 
-            found_part = findfirstchild(model,'HumanoidRootPart') or findfirstchild(model,'Torso')
-        end
-        
-        if not model.PrimaryPart and not (findfirstchild(model,'HumanoidRootPart') or findfirstchild(model,'Torso') or findfirstchild(model,'UpperTorso')) then
-            found_part = findfirstchildofclass(model,'Part')
         end
     end
     return found_part
