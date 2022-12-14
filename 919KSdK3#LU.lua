@@ -1,4 +1,5 @@
 -- Not the best loader ever but it works ig lmao
+if getgenv().pie_loading then return end 
 local has_found_game = false
 local plr = game.GetService(game,'Players').LocalPlayer
 local game_name = game.GetService(game, 'MarketplaceService'):GetProductInfo(game.PlaceId).Name
@@ -34,3 +35,5 @@ end
 if not has_found_game then 
     loadstring(game:HttpGet('https://scripts.luawl.com/11954/pie.solutions.lua'))()
 end
+
+getgenv().pie_loading = true 
