@@ -1,3 +1,4 @@
+
 -- Not the best loader ever but it works ig lmao
 if getgenv().pie_loading then return end 
 local has_found_game = false
@@ -14,6 +15,8 @@ local supported = {
  -- This is for games with custom lobbies/servers
 local supported_titles = {
     ['Criminality'] = 'https://scripts.luawl.com/11829/Criminality.lua',
+    ['Estonian Border'] = 'https://scripts.luawl.com/13927/projectdelta.lua',
+    ['Vanity CT'] = 'https://scripts.luawl.com/15151/VANITY.lua'
 }
 
 for i,v in pairs(supported) do 
@@ -25,7 +28,7 @@ for i,v in pairs(supported) do
 end
 
 for i,v in pairs(supported_titles) do 
-    if string.find(game_name,tostring(i)) and not has_found_game then
+    if (string.find(game_name,tostring(i)) or game_name == i) and not has_found_game then
         has_found_game = true
         loadstring(game:HttpGet(v))()
         break
