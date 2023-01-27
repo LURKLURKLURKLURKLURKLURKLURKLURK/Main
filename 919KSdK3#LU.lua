@@ -9,8 +9,9 @@ local game_name = game.GetService(game, 'MarketplaceService'):GetProductInfo(gam
 local supported = {
     ['4588604953'] = 'https://scripts.luawl.com/11829/Criminality.lua',
     ['455366377'] = 'https://scripts.luawl.com/13636/TheStreetsv1.0.lua',
-    ['6407649031'] = 'https://scripts.luawl.com/12202/pie.solutions.noscopearcade.lua',
+--    ['6407649031'] = 'https://scripts.luawl.com/12202/pie.solutions.noscopearcade.lua', DISCONTINUED.
     ['3398014311'] = 'https://scripts.luawl.com/13673/rt2.lua',
+    ['7336302630'] =  'https://scripts.luawl.com/13927/projectdelta.lua'
 }
  -- This is for games with custom lobbies/servers
 local supported_titles = {
