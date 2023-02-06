@@ -790,7 +790,7 @@ do
             return window.watermark
         end
         --
-        function window:KeybindsList(info)
+        function window:AddBindsList(info)
             window.keybindslist = {visible = false, keybinds = {}}
             --
             local info = info or {}
@@ -1336,7 +1336,7 @@ do
             library.shared.initialized = true
             --
             window:Watermark()
-            window:KeybindsList()
+            window:AddBindsList()
             window:StatusList()
             window:Cursor()
             --
@@ -2592,7 +2592,7 @@ do
             return toggle, colorpicker
         end
         --
-        function toggle:Keybind(info)
+        function toggle:AddBind(info)
             local info = info or {}
             local def = info.default or info.Default or nil
             local flag = info.flag or info.flag or nil
@@ -3071,7 +3071,7 @@ do
         return slider
     end
     --
-    function sections:Button(info)
+    function sections:AddButton(info)
         local info = info or {}
         local name = info.name or info.Name or info.title or info.Title or "New Button"
         local confirmation = info.confirmation or info.Confirmation or false
@@ -3199,7 +3199,7 @@ do
         return button
     end
     --
-    function sections:ButtonHolder(info)
+    function sections:AddButtonHolder(info)
         local info = info or {}
         local buttons = info.buttons or info.Buttons or {}
         --
@@ -3829,7 +3829,7 @@ do
         return multibox
     end
     --
-    function sections:Keybind(info)
+    function sections:AddBind(info)
         local info = info or {}
         local name = info.name or info.Name or "New Keybind"
         local def = info.default or info.Default or nil
@@ -5589,7 +5589,7 @@ end
     end
     
     local listbox = testMain:Listbox({flag = "Config/Selected", List = list})
-    testMain:Button({Name = "Delete", Confirmation = true, Callback = function() end})
+    testMain:AddButton({Name = "Delete", Confirmation = true, Callback = function() end})
 	testMain:Textbox({flag = "Config/Name", PlaceHolder = "Config Name", Text = "", Middle = true, ResetOnFocus = false})
 
     lib.uibind = Enum.KeyCode.Home
