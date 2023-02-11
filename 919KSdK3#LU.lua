@@ -11,7 +11,8 @@ local supported = {
     ['455366377'] = 'https://scripts.luawl.com/13636/TheStreetsv1.0.lua',
 --    ['6407649031'] = 'https://scripts.luawl.com/12202/pie.solutions.noscopearcade.lua', DISCONTINUED.
     ['3398014311'] = 'https://scripts.luawl.com/13673/rt2.lua',
-    ['7336302630'] =  'https://scripts.luawl.com/13927/projectdelta.lua'
+    ['7336302630'] =  'https://scripts.luawl.com/13927/projectdelta.lua',
+    ['863266079'] = 'https://scripts.luawl.com/15500/apoc2.lua',
 }
  -- This is for games with custom lobbies/servers
 local supported_titles = {
